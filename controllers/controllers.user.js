@@ -11,9 +11,9 @@ export const resisteruser = async (req, res, next) => {
 
         if (isExist) return next(errorHandler(404, "User already Exist"));
 
-        const hashPass = bcryptjs.hashSync(password, 10);
+        const hashPassword = bcryptjs.hashSync(password, 10);
 
-        await User.create({ name, email, password: hashPass });
+        await User.create({ name, email, password: hashPassword });
 
         res.status(201).json({
             message: "user Resister successfuly"
@@ -33,7 +33,7 @@ export const loginUser = async (req, res, next) => {
 
         const isPasswordMatch = bcryptjs.compareSync(password, user.password);
 
-        if (!isPasswordMatch) return next(errorHandler(404, "Wromg Password"));
+        if (!isPasswordMatch) return next(errorHandler(404, "Wrong Password"));
         // cookie
         const token = jwt.sign({ id: user._id }, process.env.JWT_PASSWORD_KEY);
 
