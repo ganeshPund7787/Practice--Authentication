@@ -2,6 +2,7 @@ import { User } from "../models/models.user.js";
 import bcryptjs from "bcryptjs"
 import { errorHandler } from "../utils/error.handler.js";
 import jwt from "jsonwebtoken"
+import { name } from "ejs";
 
 
 export const resisteruser = async (req, res, next) => {
@@ -65,5 +66,53 @@ export const getProfile = (req, res) => {
     console.log(rest);
 
     res.status(200).json(rest)
+
+}
+
+
+export const updateUser = async (req, res, next) => {
+    if (req.params.id !== req.user.id) {
+        return next(errorHandler(400, "You can update only your account"))
+    }
+    try {
+        const { id } = req.params
+        if (req.body.email) {
+            const user = await User.findOne({ email: req.body.email })
+            if (user)
+                return next(errorHandler(400, "email already taken"))
+        }
+
+        if (req.body.password) {
+            req.body.password = bcryptjs.hashSync(req.body.password, 10)
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(id, {
+            $set: {
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password
+            }
+        }, { new: true })
+
+        const { password, ...rest } = updatedUser._doc
+
+        res.status(200).json({ message: "User updated successfully", rest })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const deleteUser = async (req, res, next) => {
+    if (req.params.id !== req.user.id) {
+        return next(errorHandler(400, "You can delete only your account"))
+    }
+    try {
+        const { id } = req.params
+        await User.findByIdAndDelete(id)
+        res.status(200).json({ message: "User Deleted Successfully" })
+    } catch (error) {
+        next(error)
+    }
 
 }
