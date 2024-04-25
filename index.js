@@ -15,7 +15,11 @@ server.use(cookieParser());
 server.use("/user", routes);
 
 server.get('/', async (req, res, next) => {
-    res.json({ message: "Home Page" });
+    try {
+        res.json({ message: "Home Page" });
+    } catch (error) {
+        next(error);
+    }
 })
 
 server.use(errorMiddleware);

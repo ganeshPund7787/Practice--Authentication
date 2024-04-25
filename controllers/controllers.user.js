@@ -2,7 +2,6 @@ import { User } from "../models/models.user.js";
 import bcryptjs from "bcryptjs"
 import { errorHandler } from "../utils/error.handler.js";
 import jwt from "jsonwebtoken"
-import { name } from "ejs";
 
 
 export const resisteruser = async (req, res, next) => {
@@ -66,7 +65,6 @@ export const getProfile = (req, res) => {
     console.log(rest);
 
     res.status(200).json(rest)
-
 }
 
 
@@ -116,3 +114,5 @@ export const deleteUser = async (req, res, next) => {
     }
 
 }
+
+

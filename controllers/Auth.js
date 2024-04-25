@@ -2,7 +2,7 @@ import { User } from "../models/models.user.js";
 import jwt from "jsonwebtoken"
 import { errorHandler } from "../utils/error.handler.js";
 
-export const isAuthenticated = async (req, res, next) => {
+export const isAutheticated = async (req, res, next) => {
     const { token } = req.cookies;
     try {
         if (!token) return next(errorHandler(400, "You should login first"))
