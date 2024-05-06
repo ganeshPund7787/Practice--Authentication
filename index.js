@@ -9,7 +9,7 @@ import cors from 'cors'
 
 mongoConnect();
 const server = express();
-server.use(cors({ options: [process.env.FRONTEND_URI], methods: ['GET', 'POST', 'PUT', 'DELETE'] }))
+server.use(cors())
 server.use(express.json());
 server.use(cookieParser());
 server.use("/user", routes);
