@@ -9,7 +9,10 @@ import cors from 'cors'
 
 mongoConnect();
 const server = express();
-server.use(cors())
+server.use(cors({
+    origin: "*",
+    credentials: true
+}))
 server.use(express.json());
 server.use(cookieParser());
 server.use("/user", routes);
